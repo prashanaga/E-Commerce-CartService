@@ -5,6 +5,6 @@
 package com.ecommerce.cartservice.service;
 
 public interface CartService {
-
+	public  int getCartTotal(String userId);
 }
 

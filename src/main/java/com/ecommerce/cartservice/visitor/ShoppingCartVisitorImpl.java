@@ -21,7 +21,7 @@ public class ShoppingCartVisitorImpl implements ShoppingCartVisitor{
 	public int visit(CartTotalByQuantity byQuantity) {
 		int cost=0;
 		cost=byQuantity.getPrice()*byQuantity.getQuantity();
-		return 0;
+		return cost;
 	}
 
 }

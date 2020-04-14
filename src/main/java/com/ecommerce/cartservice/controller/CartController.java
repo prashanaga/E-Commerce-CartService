@@ -6,19 +6,23 @@ package com.ecommerce.cartservice.controller;
 
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.cartservice.serviceImpl.CartServiceImpl;
-
+@RestController
+@RequestMapping(value = "/cart-microservice")
 public class CartController {
 
 	@Autowired
 	CartServiceImpl shoppingCart;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/shoppingCart/addProduct", produces = "application/json")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/shoppingCart/addProduct", produces = "application/json")
 	public String addProductToCart(@RequestParam("userid") String userId, @RequestParam("asin") String asin) {
 		shoppingCart.addProductToShoppingCart(userId, asin);
 		return String.format("Added to Cart");
@@ -39,10 +43,11 @@ public class CartController {
 	public String clearCart(@RequestParam("userid") String userId) {
 		shoppingCart.clearCart(userId);
 		return String.format("Clearing Cart, Checkout successful");
-	}
-	@RequestMapping(method = RequestMethod.GET, value = "/shoppingCart/getCartTotal", produces = "application/json")
-	public String cartTotal(@RequestParam("userid") String userId) {
-		shoppingCart.getCartTotal(userId);
-		return String.format("Clearing Cart, Checkout successful");
+	}*/
+	@RequestMapping(method = RequestMethod.GET, value = "/shoppingCart/getCartTotal/{userid}", produces = "application/json")
+	public int cartTotal(@PathVariable("userid") String userId) {
+		int total=shoppingCart.getCartTotal(userId);
+		System.out.println(total);
+		return total;
 	}
 }

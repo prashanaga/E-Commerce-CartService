@@ -19,7 +19,8 @@ public class CartItemRowMapper implements RowMapper<LineItemModel>{
 	        lineItemModel.setCartId(rs.getString("CART_ID"));
 	        lineItemModel.setProductId(rs.getString("PRODUCT_ID"));
 	        lineItemModel.setQuantity(rs.getInt("QUANTITY"));
-	        lineItemModel.setWeight(rs.getFloat("WEIGHT"));
+	        lineItemModel.setWeight(rs.getInt("WEIGHT"));
+	        lineItemModel.setPrice(rs.getInt("PRICE"));
 
 	        return lineItemModel;
 

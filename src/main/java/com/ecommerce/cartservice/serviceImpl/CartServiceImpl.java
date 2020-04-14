@@ -4,6 +4,7 @@
 */
 package com.ecommerce.cartservice.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import com.ecommerce.cartservice.dao.ShoppingCartDao;
 import com.ecommerce.cartservice.model.CartModel;
 import com.ecommerce.cartservice.model.LineItemModel;
 import com.ecommerce.cartservice.service.CartService;
+import com.ecommerce.cartservice.visitor.CartTotalByQuantity;
+import com.ecommerce.cartservice.visitor.CartTotalByWeight;
 import com.ecommerce.cartservice.visitor.ItemElement;
 import com.ecommerce.cartservice.visitor.ShoppingCartVisitor;
 import com.ecommerce.cartservice.visitor.ShoppingCartVisitorImpl;
@@ -44,6 +47,7 @@ public class CartServiceImpl implements CartService {
 	public  int getCartTotal(String userId) {
 		/*ItemElement[] items = new ItemElement[]{new Book(20, "1234"),new Book(100, "5678"),
 				new Fruit(10, 2, "Banana"), new Fruit(5, 5, "Apple")};*/
+		List<ItemElement> listVisitor=new ArrayList<ItemElement>();
 		
 		String cartId=shoppingCartDao.getCartId(userId);
 		
@@ -51,14 +55,21 @@ public class CartServiceImpl implements CartService {
 		
 		for (LineItemModel item : listLineItem)  
         { 
-           
+           if(item.getQuantity() !=0)
+           {
+        	   listVisitor.add(new CartTotalByQuantity(item.getPrice(),item.getQuantity()));
+           }
+           else
+           {
+        	   listVisitor.add(new CartTotalByWeight(item.getPrice(),item.getWeight()));
+           }
         } 
 		
-		int total = calculatePrice(items);
+		int total = calculatePrice(listVisitor);
 		return total;
 	}
 	
-	private static int calculatePrice(ItemElement[] items) {
+	private static int calculatePrice(List<ItemElement> items) {
 		ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
 		int sum=0;
 		for(ItemElement item : items){
